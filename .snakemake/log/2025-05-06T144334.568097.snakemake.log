@@ -1,0 +1,27 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-rz-1815.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+create_samples_and_sig_matrix        1
+total                                1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue May  6 14:43:34 2025]
+localrule create_samples_and_sig_matrix:
+    input: 41590_2017_BFni3693_MOESM10_ESM.xlsx, dist_leukocytes_lymphocytes.csv, dist_lymphocytes.csv, celltype_fraction.csv, coarsetype_fraction.csv
+    output: healthy_sample_imputed.txt, imputed_sig_matrix.txt, real_fracs.tsv, real_coarse_fracs.tsv
+    jobid: 0
+    reason: Missing output files: healthy_sample_imputed.txt
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Tue May  6 14:44:13 2025]
+Finished jobid: 0 (Rule: create_samples_and_sig_matrix)
+1 of 1 steps (100%) done
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-06T144334.568097.snakemake.log

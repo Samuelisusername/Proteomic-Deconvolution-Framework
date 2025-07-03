@@ -1,0 +1,6 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-rz-1815.intern.ethz.ch
+Building DAG of jobs...
+MissingRuleException:
+No rule to produce imputed_sigmatrix.txt (if you use input functions make sure that they don't raise unexpected exceptions).

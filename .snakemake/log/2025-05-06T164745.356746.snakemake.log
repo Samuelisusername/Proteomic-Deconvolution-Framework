@@ -1,0 +1,50 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-rz-1815.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+visualize_results        1
+total                    1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue May  6 16:47:45 2025]
+localrule visualize_results:
+    input: real_fracs.tsv, real_coarse_fracs.tsv, RANDOM_GUESSING-Results.txt
+    output: RANDOM_GUESSING_errors.png, RANDOM_GUESSING_fractions_compare.png
+    jobid: 0
+    reason: Missing output files: RANDOM_GUESSING_errors.png
+    wildcards: method=RANDOM_GUESSING
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+RuleException:
+CalledProcessError in file "/Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile", line 57:
+Command 'set -euo pipefail;  python3 visualizing_results.py RANDOM_GUESSING-Results.txt' returned non-zero exit status 1.
+[Tue May  6 16:47:45 2025]
+Error in rule visualize_results:
+    message: None
+    jobid: 0
+    input: real_fracs.tsv, real_coarse_fracs.tsv, RANDOM_GUESSING-Results.txt
+    output: RANDOM_GUESSING_errors.png, RANDOM_GUESSING_fractions_compare.png
+    shell:
+        python3 visualizing_results.py RANDOM_GUESSING-Results.txt
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Tue May  6 16:47:45 2025]
+Error in rule visualize_results:
+    message: None
+    jobid: 0
+    input: real_fracs.tsv, real_coarse_fracs.tsv, RANDOM_GUESSING-Results.txt
+    output: RANDOM_GUESSING_errors.png, RANDOM_GUESSING_fractions_compare.png
+    shell:
+        python3 visualizing_results.py RANDOM_GUESSING-Results.txt
+        (command exited with non-zero exit code)
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-06T164745.356746.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

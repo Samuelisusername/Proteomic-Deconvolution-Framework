@@ -1,0 +1,9 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-rz-1815.intern.ethz.ch
+Building DAG of jobs...
+MissingInputException in rule some_other_rule in file "/Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile", line 3:
+Missing input files for rule some_other_rule:
+    output: second.txt
+    affected files:
+        output.txt

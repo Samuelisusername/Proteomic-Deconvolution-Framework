@@ -1,0 +1,50 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-cx-0918.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 5
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+visualize_results        1
+total                    1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon May 19 13:32:47 2025]
+localrule visualize_results:
+    input: real_fracs.tsv, real_coarse_fracs.tsv, BAYESPRISM-Results.txt
+    output: BAYESPRISM_errors.png, BAYESPRISM_fractions_compare.png
+    jobid: 0
+    reason: Missing output files: BAYESPRISM_errors.png
+    wildcards: method=BAYESPRISM
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+RuleException:
+CalledProcessError in file "/Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile", line 112:
+Command 'set -euo pipefail;  python3 visualizing_results.py BAYESPRISM-Results.txt BAYESPRISM' returned non-zero exit status 1.
+[Mon May 19 13:32:47 2025]
+Error in rule visualize_results:
+    message: None
+    jobid: 0
+    input: real_fracs.tsv, real_coarse_fracs.tsv, BAYESPRISM-Results.txt
+    output: BAYESPRISM_errors.png, BAYESPRISM_fractions_compare.png
+    shell:
+        python3 visualizing_results.py BAYESPRISM-Results.txt BAYESPRISM
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Mon May 19 13:32:47 2025]
+Error in rule visualize_results:
+    message: None
+    jobid: 0
+    input: real_fracs.tsv, real_coarse_fracs.tsv, BAYESPRISM-Results.txt
+    output: BAYESPRISM_errors.png, BAYESPRISM_fractions_compare.png
+    shell:
+        python3 visualizing_results.py BAYESPRISM-Results.txt BAYESPRISM
+        (command exited with non-zero exit code)
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-19T133247.279032.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

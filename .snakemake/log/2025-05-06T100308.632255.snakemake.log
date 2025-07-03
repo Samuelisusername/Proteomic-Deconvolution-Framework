@@ -1,0 +1,42 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-rz-1815.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+some_other_rule        1
+total                  1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue May  6 10:03:08 2025]
+localrule some_other_rule:
+    input: output.txt
+    output: second.txt
+    jobid: 0
+    reason: Missing output files: second.txt
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+Waiting at most 5 seconds for missing files:
+second.txt (missing locally)
+MissingOutputException in rule some_other_rule in file "/Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile", line 3:
+Job 0 completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+second.txt (missing locally, parent dir not present)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Tue May  6 10:03:13 2025]
+Error in rule some_other_rule:
+    message: None
+    jobid: 0
+    input: output.txt
+    output: second.txt
+    shell:
+        echo jodeldo
+        (command exited with non-zero exit code)
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-06T100308.632255.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

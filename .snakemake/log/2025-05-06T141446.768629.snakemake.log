@@ -1,0 +1,13 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-rz-1815.intern.ethz.ch
+Building DAG of jobs...
+MissingInputException in rule create_samples_and_sig_matrix in file "/Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile", line 3:
+Missing input files for rule create_samples_and_sig_matrix:
+    output: healthy_sample_imputed.txt, imputed_sigmatrix.txt, real_fracs.tsv, real_coarse_fracs.tsv
+    affected files:
+        dist_lymphocytes.csv
+        coarsetype_fraction.csv
+        celltype_fraction.csv
+        41590_2017_BFni3693_MOESM10_ESM.xlsx
+        dist_leukocytes_lymphocytes.csv

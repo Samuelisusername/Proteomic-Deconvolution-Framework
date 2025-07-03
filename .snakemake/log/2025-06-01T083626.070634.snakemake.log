@@ -1,0 +1,25 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: MacBookAir.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job            count
+-----------  -------
+clear_Bayes        1
+total              1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Sun Jun  1 08:36:26 2025]
+localrule clear_Bayes:
+    jobid: 0
+    reason: Rules with neither input nor output files are always executed.
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Sun Jun  1 08:36:26 2025]
+Finished jobid: 0 (Rule: clear_Bayes)
+1 of 1 steps (100%) done
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-06-01T083626.070634.snakemake.log

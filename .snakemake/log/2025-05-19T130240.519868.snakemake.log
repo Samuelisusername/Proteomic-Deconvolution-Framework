@@ -1,0 +1,52 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-cx-0918.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 5
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+bayes_prism                          1
+create_samples_and_sig_matrix        1
+total                                2
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon May 19 13:02:40 2025]
+localrule create_samples_and_sig_matrix:
+    input: 41590_2017_BFni3693_MOESM10_ESM.xlsx, dist_leukocytes_lymphocytes.csv, dist_lymphocytes.csv, celltype_fraction.csv, coarsetype_fraction.csv
+    output: healthy_sample_imputed.txt, imputed_sig_matrix.txt, real_fracs.tsv, real_coarse_fracs.tsv, myinput2.gbm.rdata
+    jobid: 1
+    reason: Missing output files: myinput2.gbm.rdata
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+RuleException:
+CalledProcessError in file "/Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile", line 7:
+Command 'set -euo pipefail;  python3 good_main.py' returned non-zero exit status 1.
+[Mon May 19 13:03:23 2025]
+Error in rule create_samples_and_sig_matrix:
+    message: None
+    jobid: 1
+    input: 41590_2017_BFni3693_MOESM10_ESM.xlsx, dist_leukocytes_lymphocytes.csv, dist_lymphocytes.csv, celltype_fraction.csv, coarsetype_fraction.csv
+    output: healthy_sample_imputed.txt, imputed_sig_matrix.txt, real_fracs.tsv, real_coarse_fracs.tsv, myinput2.gbm.rdata
+    shell:
+        python3 good_main.py
+        (command exited with non-zero exit code)
+Removing output files of failed job create_samples_and_sig_matrix since they might be corrupted:
+healthy_sample_imputed.txt, imputed_sig_matrix.txt, real_fracs.tsv, real_coarse_fracs.tsv
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Mon May 19 13:03:23 2025]
+Error in rule create_samples_and_sig_matrix:
+    message: None
+    jobid: 1
+    input: 41590_2017_BFni3693_MOESM10_ESM.xlsx, dist_leukocytes_lymphocytes.csv, dist_lymphocytes.csv, celltype_fraction.csv, coarsetype_fraction.csv
+    output: healthy_sample_imputed.txt, imputed_sig_matrix.txt, real_fracs.tsv, real_coarse_fracs.tsv, myinput2.gbm.rdata
+    shell:
+        python3 good_main.py
+        (command exited with non-zero exit code)
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-19T130240.519868.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

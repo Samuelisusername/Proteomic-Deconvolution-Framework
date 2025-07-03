@@ -1,0 +1,42 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-cx-0918.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+bayes_prism              1
+visualize_results        1
+total                    2
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon May 26 12:02:39 2025]
+localrule bayes_prism:
+    input: myinput2.gbm.rdata
+    output: BAYESPRISM-Results.txt
+    jobid: 2
+    reason: Missing output files: BAYESPRISM-Results.txt; Updated input files: myinput2.gbm.rdata
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Mon May 26 12:16:06 2025]
+Finished jobid: 2 (Rule: bayes_prism)
+1 of 2 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Mon May 26 12:16:06 2025]
+localrule visualize_results:
+    input: real_fracs.tsv, real_coarse_fracs.tsv, BAYESPRISM-Results.txt
+    output: BAYESPRISM_errors.png, BAYESPRISM_fractions_compare.png
+    jobid: 0
+    reason: Input files updated by another job: BAYESPRISM-Results.txt
+    wildcards: method=BAYESPRISM
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Mon May 26 12:16:07 2025]
+Finished jobid: 0 (Rule: visualize_results)
+2 of 2 steps (100%) done
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-26T120239.809456.snakemake.log

@@ -1,0 +1,26 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: MacBookAir.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Job stats:
+job      count
+-----  -------
+mean         1
+total        1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Sat May 10 20:05:15 2025]
+localrule mean:
+    output: MEAN-Results.txt
+    jobid: 0
+    reason: Missing output files: MEAN-Results.txt
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Sat May 10 20:05:17 2025]
+Finished jobid: 0 (Rule: mean)
+1 of 1 steps (100%) done
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-10T200515.676850.snakemake.log

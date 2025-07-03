@@ -1,0 +1,43 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-cx-0918.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job            count
+-----------  -------
+clear_Bayes        1
+total              1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon May 26 11:22:29 2025]
+localrule clear_Bayes:
+    jobid: 0
+    reason: Rules with neither input nor output files are always executed.
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+RuleException:
+CalledProcessError in file "/Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile", line 117:
+Command 'set -euo pipefail;  rm BAYESPRISM_errors.png BAYESPRISM-Results.txt myinput2.gbm.rdata' returned non-zero exit status 1.
+[Mon May 26 11:22:29 2025]
+Error in rule clear_Bayes:
+    message: None
+    jobid: 0
+    shell:
+        rm BAYESPRISM_errors.png BAYESPRISM-Results.txt myinput2.gbm.rdata
+        (command exited with non-zero exit code)
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Mon May 26 11:22:29 2025]
+Error in rule clear_Bayes:
+    message: None
+    jobid: 0
+    shell:
+        rm BAYESPRISM_errors.png BAYESPRISM-Results.txt myinput2.gbm.rdata
+        (command exited with non-zero exit code)
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-26T112229.277807.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

@@ -1,0 +1,41 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: MacBookAir.lan
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+random_guessing          1
+visualize_results        1
+total                    2
+
+Select jobs to execute...
+Execute 1 jobs...
+[Sat May 10 20:58:15 2025]
+localrule random_guessing:
+    output: RANDOM_GUESSING-Results.txt
+    jobid: 2
+    reason: Params have changed since last execution: Union of exclusive params before and now across all output: before: 5 now: 10 
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Sat May 10 20:58:17 2025]
+Finished jobid: 2 (Rule: random_guessing)
+1 of 2 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Sat May 10 20:58:17 2025]
+localrule visualize_results:
+    input: real_fracs.tsv, real_coarse_fracs.tsv, RANDOM_GUESSING-Results.txt
+    output: RANDOM_GUESSING_errors.png, RANDOM_GUESSING_fractions_compare.png
+    jobid: 0
+    reason: Input files updated by another job: RANDOM_GUESSING-Results.txt
+    wildcards: method=RANDOM_GUESSING
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Sat May 10 20:58:18 2025]
+Finished jobid: 0 (Rule: visualize_results)
+2 of 2 steps (100%) done
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-10T205815.700643.snakemake.log

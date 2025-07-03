@@ -1,0 +1,7 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-rz-1815.intern.ethz.ch
+Building DAG of jobs...
+WildcardError in rule visualize_results in file "/Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile", line 51:
+Wildcards in input files cannot be determined from output files: (rule visualize_results, line 86, /Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile)
+'method'

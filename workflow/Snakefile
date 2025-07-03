@@ -1,0 +1,121 @@
+
+
+rule create_samples_and_sig_matrix:
+    input: ['41590_2017_BFni3693_MOESM10_ESM.xlsx', 'dist_leukocytes_lymphocytes.csv', 'dist_lymphocytes.csv', 'celltype_fraction.csv', "coarsetype_fraction.csv"] # type: ignore
+    output: ['healthy_sample_imputed.txt', 'imputed_sig_matrix.txt', 'real_fracs.tsv', 'real_coarse_fracs.tsv', 'myinput2.gbm.rdata']
+    shell:
+        'python3 good_main.py'
+rule run_cibersort: 
+    input: ['healthy_sample_imputed.txt', 'imputed_sig_matrix.txt']
+    output: ['CIBERSORT-Results.txt']
+    shell: 'Rscript cibersort_v1.r'
+rule mean:
+    input: 
+    params: 
+        healthy = 5,
+        unhealthy = 5,
+        sig_sample_nr = "04"
+    output: 
+        "MEAN-Results.txt"
+    run: 
+        import numpy as np
+        import pandas as pd
+        cell_types = [
+        "B.memory", "B.naive", "B.plasma",
+        "mTregs", "T4.naive", "nTregs", "T4.CM", "T4.EM", "T4.EMRA",
+        "Th1", "Th17", "Th2",
+        "T8.naive", "T8.CM", "T8.EM", "T8.EMRA",
+        "mDC", "pDC", "Basophil", "Eosinophil", "Neutrophil",
+        "MO.classical", "MO.intermediate", "MO.nonclassical",
+        "NK.bright", "NK.dim"
+        ]
+        columns = [f"LFQ.intensity.imputed_{ct}_{params.sig_sample_nr}_steady-state" for ct in cell_types]
+        percentages = {
+            "B cells": {"B.memory": 45.15, "B.naive": 54.18, "B.plasma": 0.68},
+            "T cells": {
+                "T4.CM": 14.77, "T4.EM": 7.17, "T4.EMRA": 0.84, "T4.naive": 12.66,
+                "T8.CM": 8.86, "T8.EM": 9.70, "T8.EMRA": 6.75, "T8.naive": 10.55,
+                "Th1": 10.13, "Th17": 5.91, "Th2": 6.33, "mTregs": 4.64, "nTregs": 1.69
+            },
+            "Myeloid cells": {
+                "Basophil": 8.55, "Eosinophil": 6.84, "MO.classical": 28.21,
+                "MO.intermediate": 4.27, "MO.nonclassical": 9.40, "Neutrophil": 34.19,
+                "mDC": 2.56, "pDC": 5.98
+            },
+            "NK cells": {"NK.bright": 41.03, "NK.dim": 58.97}
+        }
+        data = []
+        healthy_coarse_fracs = {"B cells":9.125807636613832,"T cells":64.09516066434331, "Myeloid cells":22.551629396455482, "NK cells": 4.227402302587374}
+        healthy_fine_fracs = [
+            [
+                coarse_frac * fine_frac / 10000
+                for fine_frac in percentages[celltype].values()
+            ]
+            for (celltype, coarse_frac) in healthy_coarse_fracs.items()
+        ]
+        biglist = []
+        for list in healthy_fine_fracs:
+            for elem in list:
+                biglist.append(elem)
+        for i in range(params.healthy):
+            data.append([f"sample_{i+1}_healthy"] + biglist)
+        unhealthy_coarse_fracs = {"B cells": 82.520507, "T cells":12.311171,  "Myeloid cells":3.607365,"NK cells": 1.560957}
+        unhealthy_fine_fracs = [[finefrac * coarsefracs/10000 for finefrac in percentages[celltype].values()] for (celltype, coarsefracs) in unhealthy_coarse_fracs.items()]
+        bigdata = []
+        for list in unhealthy_fine_fracs:
+            for elem in list: 
+                bigdata.append(elem)
+        for i in range(params.unhealthy):
+            data.append([f"sample_{params.healthy +i}_unhealthy"] + bigdata)
+        df_data = pd.DataFrame(data, columns = ["Mixture"]+ columns)
+        df_data.to_csv(output[0], sep = "\t", index = False)
+
+rule random_guessing: 
+    params: 
+        num_samples = 10,
+        sig_sample_nr = "04"
+    output : 'RANDOM_GUESSING-Results.txt'
+    run: 
+        import numpy as np
+        import pandas as pd
+        cell_types = [
+            "B.memory", "B.naive", "B.plasma",
+            "mTregs", "T4.naive", "nTregs", "T4.CM", "T4.EM", "T4.EMRA",
+            "Th1", "Th17", "Th2",
+            "T8.naive", "T8.CM", "T8.EM", "T8.EMRA",
+            "mDC", "pDC", "Basophil", "Eosinophil", "Neutrophil",
+            "MO.classical", "MO.intermediate", "MO.nonclassical",
+            "NK.bright", "NK.dim"
+        ]
+        columns = [f"LFQ.intensity.imputed_{ct}_{params.sig_sample_nr}_steady-state" for ct in cell_types]
+        data = []
+        for i in range(params.num_samples):
+            rand_fracs = np.random.dirichlet(np.ones(26), size = 1)[0]
+            row = [f"sample_{i+1}"] + list(rand_fracs)
+            data.append(row)
+        df = pd.DataFrame(data, columns= ["Mixture"] + columns)
+        df.to_csv(output[0], sep = "\t", index = False)
+
+rule bayes_prism:
+    input: 'myinput2.gbm.rdata'
+    output: 'BAYESPRISM-Results.txt'
+    shell: 'Rscript.r'
+
+#rule for nnls
+#connect to ssh via vscode
+rule nnls: 
+    input: 
+
+
+rule visualize_results: 
+    input: 
+        real_fracs = 'real_fracs.tsv',
+        real_coarse_fracs = 'real_coarse_fracs.tsv',
+        results = '{method}-Results.txt'
+    output: ['{method}_errors.png', '{method}_fractions_compare.png']
+    shell : 'python3 visualizing_results.py {input.results} {wildcards.method}'
+
+rule clear_Bayes:
+    shell: 
+        'rm BAYESPRISM_errors.png BAYESPRISM-Results.txt myinput2.gbm.rdata'
+    

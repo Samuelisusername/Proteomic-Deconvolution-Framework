@@ -1,0 +1,40 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-rz-1815.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+hello                  1
+some_other_rule        1
+total                  2
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue May  6 09:51:08 2025]
+localrule hello:
+    output: output.txt
+    jobid: 1
+    reason: Missing output files: output.txt
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Tue May  6 09:51:08 2025]
+Finished jobid: 1 (Rule: hello)
+1 of 2 steps (50%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Tue May  6 09:51:08 2025]
+localrule some_other_rule:
+    input: output.txt
+    output: second.txt
+    jobid: 0
+    reason: Missing output files: second.txt; Input files updated by another job: output.txt
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Tue May  6 09:51:08 2025]
+Finished jobid: 0 (Rule: some_other_rule)
+2 of 2 steps (100%) done
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-06T095108.396679.snakemake.log

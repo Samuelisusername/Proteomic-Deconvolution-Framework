@@ -1,0 +1,56 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-cx-0918.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 5
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+bayes_prism                          1
+create_samples_and_sig_matrix        1
+visualize_results                    1
+total                                3
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon May 19 14:09:40 2025]
+localrule create_samples_and_sig_matrix:
+    input: 41590_2017_BFni3693_MOESM10_ESM.xlsx, dist_leukocytes_lymphocytes.csv, dist_lymphocytes.csv, celltype_fraction.csv, coarsetype_fraction.csv
+    output: healthy_sample_imputed.txt, imputed_sig_matrix.txt, real_fracs.tsv, real_coarse_fracs.tsv, myinput2.gbm.rdata
+    jobid: 1
+    reason: Missing output files: myinput2.gbm.rdata
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Mon May 19 14:10:23 2025]
+Finished jobid: 1 (Rule: create_samples_and_sig_matrix)
+1 of 3 steps (33%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Mon May 19 14:10:23 2025]
+localrule bayes_prism:
+    input: myinput2.gbm.rdata
+    output: BAYESPRISM-Results.txt
+    jobid: 2
+    reason: Missing output files: BAYESPRISM-Results.txt; Input files updated by another job: myinput2.gbm.rdata
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Mon May 19 14:20:42 2025]
+Finished jobid: 2 (Rule: bayes_prism)
+2 of 3 steps (67%) done
+Select jobs to execute...
+Execute 1 jobs...
+[Mon May 19 14:20:42 2025]
+localrule visualize_results:
+    input: real_fracs.tsv, real_coarse_fracs.tsv, BAYESPRISM-Results.txt
+    output: BAYESPRISM_errors.png, BAYESPRISM_fractions_compare.png
+    jobid: 0
+    reason: Missing output files: BAYESPRISM_errors.png; Input files updated by another job: BAYESPRISM-Results.txt, real_coarse_fracs.tsv, real_fracs.tsv
+    wildcards: method=BAYESPRISM
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Mon May 19 14:20:43 2025]
+Finished jobid: 0 (Rule: visualize_results)
+3 of 3 steps (100%) done
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-19T140940.595198.snakemake.log

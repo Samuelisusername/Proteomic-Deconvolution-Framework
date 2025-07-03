@@ -1,0 +1,40 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-cx-0918.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 8
+Rules claiming more threads will be scaled down.
+Job stats:
+job                  count
+-----------------  -------
+bayes_prism              1
+visualize_results        1
+total                    2
+
+Select jobs to execute...
+Execute 1 jobs...
+[Mon May 26 10:13:19 2025]
+localrule bayes_prism:
+    input: myinput2.gbm.rdata
+    output: BAYESPRISM-Results.txt
+    jobid: 2
+    reason: Missing output files: BAYESPRISM-Results.txt; Updated input files: myinput2.gbm.rdata
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+Terminating processes on user request, this might take some time.
+RuleException:
+CalledProcessError in file "/Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile", line 102:
+Command 'set -euo pipefail;  Rscript Bayes_Prism.r' returned non-zero exit status 1.
+[Mon May 26 10:26:45 2025]
+Error in rule bayes_prism:
+    message: None
+    jobid: 2
+    input: myinput2.gbm.rdata
+    output: BAYESPRISM-Results.txt
+    shell:
+        Rscript Bayes_Prism.r
+        (command exited with non-zero exit code)
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-26T101319.945220.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.

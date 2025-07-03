@@ -1,0 +1,26 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-rz-1815.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                count
+---------------  -------
+random_guessing        1
+total                  1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue May  6 16:16:34 2025]
+localrule random_guessing:
+    output: RANDOM_GUESSING-Results.txt
+    jobid: 0
+    reason: Missing output files: RANDOM_GUESSING-Results.txt
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+[Tue May  6 16:16:35 2025]
+Finished jobid: 0 (Rule: random_guessing)
+1 of 1 steps (100%) done
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-06T161634.396762.snakemake.log

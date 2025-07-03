@@ -1,0 +1,44 @@
+Assuming unrestricted shared filesystem usage.
+None
+host: student-net-rz-1815.intern.ethz.ch
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 1 (use --cores to define parallelism)
+Rules claiming more threads will be scaled down.
+Job stats:
+job                              count
+-----------------------------  -------
+create_samples_and_sig_matrix        1
+total                                1
+
+Select jobs to execute...
+Execute 1 jobs...
+[Tue May  6 14:42:28 2025]
+localrule create_samples_and_sig_matrix:
+    input: 41590_2017_BFni3693_MOESM10_ESM.xlsx, dist_leukocytes_lymphocytes.csv, dist_lymphocytes.csv, celltype_fraction.csv, coarsetype_fraction.csv
+    output: healthy_sample_imputed.txt, imputed_sigmatrix.txt, real_fracs.tsv, real_coarse_fracs.tsv
+    jobid: 0
+    reason: Missing output files: healthy_sample_imputed.txt
+    resources: tmpdir=/var/folders/zq/9vmc9tbn5pv_0b8_c7ffd6nh0000gn/T
+
+Waiting at most 5 seconds for missing files:
+imputed_sigmatrix.txt (missing locally)
+MissingOutputException in rule create_samples_and_sig_matrix in file "/Users/samuelgair/Desktop/BA_code/snakemake_fun/workflow/Snakefile", line 3:
+Job 0 completed successfully, but some output files are missing. Missing files after 5 seconds. This might be due to filesystem latency. If that is the case, consider to increase the wait time with --latency-wait:
+imputed_sigmatrix.txt (missing locally, parent dir not present)
+Removing output files of failed job create_samples_and_sig_matrix since they might be corrupted:
+healthy_sample_imputed.txt, real_fracs.tsv, real_coarse_fracs.tsv
+Shutting down, this might take some time.
+Exiting because a job execution failed. Look below for error messages
+[Tue May  6 14:43:12 2025]
+Error in rule create_samples_and_sig_matrix:
+    message: None
+    jobid: 0
+    input: 41590_2017_BFni3693_MOESM10_ESM.xlsx, dist_leukocytes_lymphocytes.csv, dist_lymphocytes.csv, celltype_fraction.csv, coarsetype_fraction.csv
+    output: healthy_sample_imputed.txt, imputed_sigmatrix.txt, real_fracs.tsv, real_coarse_fracs.tsv
+    shell:
+        python3 good_main.py
+        (command exited with non-zero exit code)
+Complete log(s): /Users/samuelgair/Desktop/BA_code/snakemake_fun/.snakemake/log/2025-05-06T144228.126335.snakemake.log
+WorkflowError:
+At least one job did not complete successfully.
