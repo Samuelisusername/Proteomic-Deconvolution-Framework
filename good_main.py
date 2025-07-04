@@ -570,11 +570,11 @@ def generate_imputed_sample(healthy):
             for i in range(4):
                 debugstep = triple_df.iloc[:,i]
                 fine_type_sample+=rand_nrs[i]* debugstep
-                fine_type_sample_inlogged += rand_nrs[i]*quadruple_df_inlogged.iloc[:,i]
+                fine_type_sample_inlogged += rand_nrs[i] *quadruple_df_inlogged.iloc[:,i]
                 fine_type_sample_nonlogged += rand_nrs[i] *quadruple_df_nonlogged.iloc[:,i]
                 fine_type_sample_outlogged += rand_nrs[i]* quadruple_df_outlogged.iloc[:, i]
 
-            real_sig_dict_nonlogged[fine_celltype] = fine_type_sample
+            real_sig_dict_nonlogged[fine_celltype] =  fine_type_sample_nonlogged
             real_sig_dict_inlogged[fine_celltype] = fine_type_sample_inlogged
             real_sig_dict_outlogged[fine_celltype] = np.log1p(fine_type_sample_outlogged)
             
@@ -595,7 +595,7 @@ def generate_imputed_sample(healthy):
     real_sig_inlogged_df.to_csv("real_sig_inlogged.txt", sep = "\t")
     real_sig_nonlogged_df = pd.DataFrame(real_sig_dict_nonlogged)
     real_sig_nonlogged_df.to_csv("real_sig_nonlogged.txt", sep  = "\t")
-    
+
     sample *= 100 #this is now basically sample_nonlogged
     sample_inlogged*=100
     sample_outlogged*=100
@@ -918,6 +918,13 @@ def get_bayes_input(healthy_sample_nr, unhealthy_sample_nr):
     r_cell_state_labels_gen = ro.StrVector(cell_type_labels_gen)
     r_cell_type_labels = ro.StrVector(cell_type_labels)
     r_cell_type_labels_gen = ro.StrVector(cell_type_labels_gen)#is this correct? same as cell_state_labels_again?
+
+    initial_bayes_ref_matrix = pd.DataFrame()
+    #Real initial bayesprism matrix: 
+    for i in range(0, imputed_df_nonNA.shape[1], 4):
+        columns_to_sum = imputed_df_nonNA.iloc[:, i:i+4]
+        initial_bayes_ref_matrix[f"sum_{i//4}"] = columns_to_sum.sum(axis = 1)
+    initial_bayes_ref_matrix.to_csv("initial_baye_ref_matrix.txt", sep = "\t")
 
     # Save the data to an R .rdata file
     ro.r.assign("sc.dat", r_sc_dat)

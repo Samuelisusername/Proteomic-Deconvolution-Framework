@@ -1,18 +1,16 @@
+import numpy as np
 import pandas as pd
-
-# Load the file
-df = pd.read_csv("/Users/samuelgair/Desktop/BA_code/snakemake_fun/BAYESPRISM-updated_sig_matrix1002.txt", sep="\t", index_col=0)
-
-# View the first few rows
-print(df.head())
-
-# Convert values to numeric (just in case)
-df = df.apply(pd.to_numeric)
-
-# Get the first row (e.g., B.memory)
-first_row = df.iloc[0]
-
-# Sum of the first row
-row_sum = first_row.sum()
-
-print(f"Sum of the first row: {row_sum}")
+alpha = [1, 1, 1, 1]
+df = pd.read_excel('41590_2017_BFni3693_MOESM10_ESM.xlsx', engine='openpyxl') 
+df.set_index('Majority protein IDs', inplace=True) 
+df_LFQ = df.loc[:, df.columns.str.contains('LFQ.intensity')]
+imputed_df = df.loc[:, ~df.columns.str.contains("Thrombo|Erythro|activ") & df.columns.str.contains("imputed")]
+imputed_df_nonNA = imputed_df.dropna()
+# Convert all columns to numeric, coercing non-numeric values to NaN
+print(np.random.dirichlet(np.ones(4), size=1)[0])
+initial_bayes_ref_matrix = pd.DataFrame()
+#Real initial bayesprism matrix: 
+for i in range(0, imputed_df_nonNA.shape[1], 4):
+    columns_to_sum = imputed_df_nonNA.iloc[:, i:i+4]
+    initial_bayes_ref_matrix[f"sum_{i//4}"] = columns_to_sum.sum(axis = 1)
+initial_bayes_ref_matrix.to_csv("initial_baye_ref_matrix.txt", sep = "\t")
