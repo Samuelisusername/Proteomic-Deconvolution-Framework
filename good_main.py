@@ -590,8 +590,12 @@ def generate_imputed_sample(healthy):
         sample_nonlogged = add_to_sample(coarse_group_name=coarse_group, total_sample=sample_nonlogged, coarsetype_sample=coarse_sample_nonlogged, healthy= healthy, rand_frac = rand_frac)
         sample_outlogged = add_to_sample(coarse_group_name=coarse_group, total_sample=sample_outlogged, coarsetype_sample=coarse_sample_outlogged, healthy = healthy, rand_frac= rand_frac)
     real_sig_outlogged_df = pd.DataFrame(real_sig_dict_outlogged)
+    real_sig_outlogged_df.to_csv("real_sig_outlogged.txt",sep = "\t")
     real_sig_inlogged_df = pd.DataFrame(real_sig_dict_inlogged)
+    real_sig_inlogged_df.to_csv("real_sig_inlogged.txt", sep = "\t")
     real_sig_nonlogged_df = pd.DataFrame(real_sig_dict_nonlogged)
+    real_sig_nonlogged_df.to_csv("real_sig_nonlogged.txt", sep  = "\t")
+    
     sample *= 100 #this is now basically sample_nonlogged
     sample_inlogged*=100
     sample_outlogged*=100
