@@ -44,6 +44,7 @@ fracs_df = pd.read_csv("real_fracs.tsv", sep = "\t", index_col = 0).T
 fracs_df_good_cell_order = fracs_df.rename(columns=column_mapping)
 
 sig_matrix = pd.read_csv(f"imputed_sig_matrix_{args}.txt", sep = "\t", index_col=0)
+sig_matrix = pd.read_csv(f"imputed_sig_matrix_real.txt", sep = "\t", index_col=0)
 fracs_df_good_cell_order = fracs_df_good_cell_order[sig_matrix.columns.to_list()]
 X = sig_matrix.values
 

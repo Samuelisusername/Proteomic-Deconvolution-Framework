@@ -18,7 +18,7 @@ if(length(args) > 0){
 
 sc.dat.filtered <- cleanup.genes (input=sc.dat, input.type="count.matrix", species="hs", gene.group=c( "Rb","Mrp","other_Rb","chrM","MALAT1","chrX","chrY") , exp.cells=5)
 myPrism <-new.prism(
-  reference=sc.dat.filtered,
+  reference=sc.dat,#not filtered atm because the discreptancy is too large
   mixture=bk.dat,
   input.type="count.matrix",
   cell.type.labels = cell.type.labels,

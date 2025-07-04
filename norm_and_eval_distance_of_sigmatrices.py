@@ -1,4 +1,6 @@
 import pandas as pd
+import numpy as np
+from sklearn.metrics import mean_squared_error
 
 # Load the matrix (tab-separated, gene IDs as index)
 df = pd.read_csv("randomized_bayes_sig_matrix.tsv", sep="\t", index_col=0)
@@ -9,11 +11,12 @@ df = df.apply(pd.to_numeric)
 # Normalize each column so it sums to 1
 df_normalized = df.div(df.sum(axis=0), axis=1)
 print(df_normalized.head())
-reference = pd.read_csv("BAYESPRISM-updated_sig_matrix1002.txt", sep="\t", index_col=0)
+reference = pd.read_csv("BAYESPRISM-updated_sig_matrixdefault_id.txt", sep="\t", index_col=0)
 print(reference.T.head())
+reference = reference.T
 
 
-normalized_values = normalized.values
+normalized_values = df_normalized.values
 reference_values = reference.values
 
 # Compute RMSE per cell type (row-wise)
@@ -24,7 +27,7 @@ overall_rmse = np.sqrt(mean_squared_error(reference_values.flatten(), normalized
 
 # Print results
 print("RMSE per cell type:")
-for i, val in enumerate(rmse_per_cell):
-    print(f"Cell type {i}: {val:.6f}")
+# for i, val in enumerate(rmse_per_cell):
+#     print(f"Cell type {i}: {val:.6f}")
 
 print(f"\nOverall RMSE: {overall_rmse:.6f}")

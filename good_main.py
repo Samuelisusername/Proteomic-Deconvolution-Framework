@@ -27,7 +27,7 @@
         #(Note: if you dont know which to use or just want samples to adjust for whatever fancy other methods you want to use, just use "ciber_and_nnls", "bayes" is really specific to bayesprism and you'll probs have a hard time altering that format)
     #4. <job_id>
         #this is to help the user assign each iteration of running this code a unique number.  for example: in case you want to test the method on different signature matrices, then you just run this code several times with different job_id's and your signature matrices will be saved in the sigs directory with that specific job id.
-        #Usually you wont need this, and in that case just write some jibberish integer to fill the spot
+        #Usually you wont need this, and in that case just write some jibberish integer to fill the spot.
 # outputs: 
     #imputed_sig_matrix_<normalization>.txt
         #Cibersort and NNLS(Non-negative least squares) read from this and treat it as they proteomic signature matrix
@@ -544,6 +544,9 @@ def generate_imputed_sample(healthy):
         rand_frac = get_rand_healthy_frac() #generates a coarse frac
     else:  
         rand_frac = get_rand_unhealthy_frac()
+    real_sig_dict_outlogged = {}
+    real_sig_dict_inlogged = {}
+    real_sig_dict_nonlogged = {}
     for coarse_group, group_percentages in percentages.items():
         coarse_sample = np.zeros((all_imputed_arrays['B.naive'].shape[0]))
         coarse_sample_inlogged = np.zeros((all_imputed_arrays['B.naive'].shape[0]))
@@ -571,7 +574,10 @@ def generate_imputed_sample(healthy):
                 fine_type_sample_nonlogged += rand_nrs[i] *quadruple_df_nonlogged.iloc[:,i]
                 fine_type_sample_outlogged += rand_nrs[i]* quadruple_df_outlogged.iloc[:, i]
 
-        
+            real_sig_dict_nonlogged[fine_celltype] = fine_type_sample
+            real_sig_dict_inlogged[fine_celltype] = fine_type_sample_inlogged
+            real_sig_dict_outlogged[fine_celltype] = np.log1p(fine_type_sample_outlogged)
+            
             coarse_sample+=fine_type_sample* fine_in_coarse_percentage
             coarse_sample_inlogged+=fine_type_sample_inlogged * fine_in_coarse_percentage
             coarse_sample_outlogged+= fine_type_sample_outlogged*fine_in_coarse_percentage
@@ -583,6 +589,9 @@ def generate_imputed_sample(healthy):
         sample_inlogged = add_to_sample(coarse_group_name=coarse_group, total_sample=sample_inlogged, coarsetype_sample=coarse_sample_inlogged, healthy=healthy, rand_frac=rand_frac)
         sample_nonlogged = add_to_sample(coarse_group_name=coarse_group, total_sample=sample_nonlogged, coarsetype_sample=coarse_sample_nonlogged, healthy= healthy, rand_frac = rand_frac)
         sample_outlogged = add_to_sample(coarse_group_name=coarse_group, total_sample=sample_outlogged, coarsetype_sample=coarse_sample_outlogged, healthy = healthy, rand_frac= rand_frac)
+    real_sig_outlogged_df = pd.DataFrame(real_sig_dict_outlogged)
+    real_sig_inlogged_df = pd.DataFrame(real_sig_dict_inlogged)
+    real_sig_nonlogged_df = pd.DataFrame(real_sig_dict_nonlogged)
     sample *= 100 #this is now basically sample_nonlogged
     sample_inlogged*=100
     sample_outlogged*=100
