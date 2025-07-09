@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import argparse
+from scipy.stats import pearsonr, spearmanr
 parser = argparse.ArgumentParser(description= "Vizualize prediction results.")
 parser.add_argument("results")
 parser.add_argument("method")
@@ -116,6 +117,50 @@ plt.legend().remove()
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.savefig("cell_type_group_sums.png")  # Save as PNG """
+def compute_correlations(df):
+    """
+    Computes Pearson and Spearman correlation coefficients for predicted vs real values.
+
+    Parameters:
+        df (pd.DataFrame): DataFrame containing predicted and real values.
+
+    Returns:
+        pd.DataFrame: DataFrame with Pearson and Spearman correlation coefficients for each cell type.
+    """
+    cell_groups = {
+        "B cells": ['B.memory', 'B.naive', 'B.plasma'],
+        "T cells": ['T4.CM', 'T4.EM', 'T4.EMRA', 'T4.naive', 'T8.CM', 'T8.EM', 'T8.EMRA', 'T8.naive', 'Th1', 'Th17', 'Th2', 'mTregs', 'nTregs'],
+        "Myeloid cells": ['Basophil', 'Eosinophil', 'MO.classical', 'MO.intermediate', 'MO.nonclassical', 'Neutrophil', 'mDC', 'pDC'],
+        "NK cells": ['NK.bright', 'NK.dim']
+    }
+
+    # Sum the predicted subtypes into coarse types
+    for coarse_type, subtypes in cell_groups.items():
+        df[coarse_type] = df[subtypes].sum(axis=1)
+
+    # Define predicted and real coarse type columns
+    predicted_to_real_name = {key: f"{key}, real" for key in cell_groups.keys()}
+
+    correlation_data = []
+    for cell_type in cell_groups.keys():
+        predicted = df[cell_type]
+        real = df[predicted_to_real_name[cell_type]]
+
+        # Compute Pearson and Spearman correlations
+        pearson_corr, _ = pearsonr(predicted, real)
+        spearman_corr, _ = spearmanr(predicted, real)
+
+        correlation_data.append({
+            "Cell Type": cell_type,
+            "Pearson Correlation": pearson_corr,
+            "Spearman Correlation": spearman_corr
+        })
+
+    # Convert to DataFrame
+    correlation_df = pd.DataFrame(correlation_data)
+    correlation_df.to_csv(f"pearson_and_spearman_corrs/{args.method}_correlations.csv", index=False)
+    print(correlation_df)
+    return correlation_df
 
 def visualize_predicted_vs_real(df):
     global method
@@ -271,6 +316,7 @@ print("mean error of coarse data: \n", np.mean(abserrorlist))
 errors.plot(kind = 'bar')
 plt.title("Prediction Errors")
 plt.show() """
+compute_correlations(combined_coarse_df)
 visualize_prediciton_errors(combined_coarse_df)
 visualize_predicted_vs_real(combined_coarse_df)
 visualize_predicted_vs_real_percentages(combined_coarse_df)

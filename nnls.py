@@ -44,8 +44,18 @@ fracs_df = pd.read_csv("real_fracs.tsv", sep = "\t", index_col = 0).T
 fracs_df_good_cell_order = fracs_df.rename(columns=column_mapping)
 
 sig_matrix = pd.read_csv(f"imputed_sig_matrix_{args}.txt", sep = "\t", index_col=0)
-sig_matrix = pd.read_csv(f"imputed_sig_matrix_real.txt", sep = "\t", index_col=0)
-fracs_df_good_cell_order = fracs_df_good_cell_order[sig_matrix.columns.to_list()]
+#cell_type_sums = sig_matrix.sum(axis=0)
+
+#sig_matrix = pd.read_csv(f"imputed_sig_matrix_real.txt", sep = "\t", index_col=0) #this was active bevore checking the updated sig_matrix
+# sig_matrix = pd.read_csv(f"/Users/samuelgair/Desktop/BA_code/snakemake_fun/BAYESPRISM-updated_sig_matrixdefault_id.txt", sep = "\t", index_col=0).T #this was added
+# sig_matrix.reset_index(drop = True, inplace=True)
+# print(sig_matrix.shape)
+# print(sig_matrix.head)
+# sig_matrix.columns = sig_matrix.iloc[0]#until here
+# sig_matrix = sig_matrix.multiply(cell_type_sums, axis = 1)
+#sig_matrix = sig_matrix[1:]
+
+fracs_df_good_cell_order = fracs_df_good_cell_order[sig_matrix.columns.to_list()] #this was active bevore checking the updated sig_matrix
 X = sig_matrix.values
 
 
