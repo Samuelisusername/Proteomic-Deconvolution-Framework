@@ -7,6 +7,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.linear_model import LinearRegression
 import argparse
+from scipy.optimize import nnls
 parser = argparse.ArgumentParser()
 parser.add_argument("loggedness")
 args = parser.parse_args().loggedness
@@ -69,6 +70,7 @@ for i in range(len(samples_df.columns.to_list())):
     y_pred_nnls = reg_nnls.fit(X_train, y_train).predict(X_test)
     r2_score_nnls = r2_score(y_test, y_pred_nnls)
     coefficients = reg_nnls.coef_ /100
+    coefficients = coefficients / coefficients.sum()#added this line
     results = dict(zip(column_mapping.values(), coefficients))
     print("NNLS ", r2_score_nnls)
     print("Coefficients:", coefficients)

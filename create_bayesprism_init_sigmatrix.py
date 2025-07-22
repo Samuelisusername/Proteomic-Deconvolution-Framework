@@ -16,16 +16,15 @@ initial_bayes_ref_matrix = pd.DataFrame()
 #Real initial bayesprism matrix: 
 for i in range(0, imputed_df_nonNA.shape[1], 4):
     columns_to_sum = imputed_df_nonNA.iloc[:, i:i+4]
-    initial_bayes_ref_matrix[f"sum_{i//4}"] = columns_to_sum.sum(axis = 1)
+    initial_bayes_ref_matrix[columns_to_sum.columns[0]] = columns_to_sum.sum(axis = 1)
 
-print(initial_bayes_ref_matrix)
+print(initial_bayes_ref_matrix.columns)
 column_names = [
-    'B.memory', 'B.naive', 'B.plasma', 'T4.CM', 'T4.EM', 'T4.EMRA',
-    'T4.naive', 'T8.CM', 'T8.EM', 'T8.EMRA', 'T8.naive', 'Th1', 'Th17',
-    'Th2', 'mTregs', 'nTregs', 'Basophil', 'Eosinophil', 'MO.classical',
-    'MO.intermediate', 'MO.nonclassical', 'Neutrophil', 'mDC', 'pDC',
+    'B.memory', 'B.naive', 'B.plasma', 'mTregs','T4.naive', 'nTregs', 'T4.CM', 'T4.EM', 'T4.EMRA', 'Th1', 'Th17',
+    'Th2', 'T8.naive',
+    'T8.CM', 'T8.EM', 'T8.EMRA', 'mDC', 'pDC',  'Basophil', 'Eosinophil','Neutrophil',  'MO.classical',
+    'MO.intermediate', 'MO.nonclassical', 
     'NK.bright', 'NK.dim'
 ]
 initial_bayes_ref_matrix.columns = column_names[:initial_bayes_ref_matrix.shape[1]]
-print(initial_bayes_ref_matrix)
 initial_bayes_ref_matrix.to_csv("initial_bayes_ref_matrix.txt", sep = "\t")

@@ -317,7 +317,7 @@ def get_test_samples_sts(cell_type): #returns a dataframe of the left out test s
 #     res = imputed_df_nonNA.loc[:, mask]
 #     if (loggedness== "inlogged"):
 #         res = np.log1p(res)
-    return res #usually should log this
+#    return res #usually should log this
 def get_generation_samples_sts_inlogged(cell_type):
     return np.log1p(imputed_df_nonNA.loc[:,imputed_df_nonNA.columns.str.contains(cell_type)])
 def get_generation_samples_sts_outlogged_and_nonlogged(cell_type):
@@ -919,12 +919,7 @@ def get_bayes_input(healthy_sample_nr, unhealthy_sample_nr):
     r_cell_type_labels = ro.StrVector(cell_type_labels)
     r_cell_type_labels_gen = ro.StrVector(cell_type_labels_gen)#is this correct? same as cell_state_labels_again?
 
-    initial_bayes_ref_matrix = pd.DataFrame()
-    #Real initial bayesprism matrix: 
-    for i in range(0, imputed_df_nonNA.shape[1], 4):
-        columns_to_sum = imputed_df_nonNA.iloc[:, i:i+4]
-        initial_bayes_ref_matrix[f"sum_{i//4}"] = columns_to_sum.sum(axis = 1)
-    initial_bayes_ref_matrix.to_csv("initial_baye_ref_matrix.txt", sep = "\t")
+
 
     # Save the data to an R .rdata file
     ro.r.assign("sc.dat", r_sc_dat)

@@ -1,12 +1,15 @@
 #usage:
-    # python3 good_main.py <number_of_healthy_bulk_samples> <number_of_cancerous_bulk_samples> <method> <job_id>
-
-#: 0.82520507 0.12311171 0.03607365 0.01560957
-# 0.09125808 0.64095161 0.22551629 0.04227402 0
+    # python3 choose_input_frac.py <number_of_healthy_bulk_samples> <number_of_cancerous_bulk_samples> <method> <job_id>
+# enter fracs healthy: <NK> <B> <Myeloid> <T>
+# enter fracs cancerous: <B> <T cells> <Myeloid>
+# example healthy frac:  0.04227402 0.09125808 0.22551629 0.64095161
+# example cancerous frac: 0.82520507 0.12311171 0.03607365 0.01560957 0
 #then give 4 values, and then 3
+#0.25 0.25 0.25 0.25
+#0.97 0.01 0.01 0.01 0
 
 #example usage:
-    # python3 good_main.py 5 5 ciber_and_nnls 50
+    # python3 good_main.py 5 5 ciber_and_nnls 5
 
 #overview: 
 # This script generates data for deconvolution method benchmarking purposes. 
@@ -97,12 +100,13 @@ def create_fixed_matrix():
     imputed_df_nonNA_sigmatrix01.index = imputed_df_nonNA_sigmatrix04.index
     imputed_df_nonNA_sigmatrix01.columns = imputed_df_nonNA_sigmatrix04.columns
     #combined_df_real.to_csv(f"imputed_sig_matrix_{args}.txt", sep = "\t") #for now...
-    imputed_df_nonNA_sigmatrix04.to_csv(f"imputed_sig_matrix_nonlogged.txt", sep = "\t")
-    imputed_df_nonNA_sigmatrix04.to_csv(f"sigs/imputed_sig_matrix_{current_rand_sig_nr}.txt", sep = "\t")
-    imputed_df_nonNA_sigmatrix04 = np.log1p(imputed_df_nonNA_sigmatrix01)
-    imputed_df_nonNA_sigmatrix04.to_csv(f"imputed_sig_matrix_outlogged.txt", sep = "\t")
-    imputed_df_nonNA_sigmatrix04.to_csv(f"imputed_sig_matrix_inlogged.txt", sep = "\t")    
+    imputed_df_nonNA_sigmatrix04.to_csv(f"imputed_sig_matrix_nonlogged.txt", sep = "\t") #sigfixed
+    #imputed_df_nonNA_sigmatrix03.to_csv(f"sigs/imputed_sig_matrix_{current_rand_sig_nr}.txt", sep = "\t")
+    #imputed_df_nonNA_sigmatrix03 = np.log1p(imputed_df_nonNA_sigmatrix01)
+    #imputed_df_nonNA_sigmatrix03.to_csv(f"imputed_sig_matrix_outlogged.txt", sep = "\t")
+   # imputed_df_nonNA_sigmatrix03.to_csv(f"imputed_sig_matrix_inlogged.txt", sep = "\t")    
     return    
+
 
 
 def create_rand_matrix():
@@ -126,7 +130,7 @@ def create_rand_matrix():
     n_rows, n_cols = imputed_df_nonNA_sigmatrix01.shape
 
     # Dirichlet parameters (uniform)
-    alpha = [1, 1, 1, 1]
+    alpha = [1, 1]#[1, 1, 1, 1] change this back
     alpha_real = [1, 1, 1] #this is for creating a sig matrix out of 3 and then testing the left out one, further changes to the code needed if this option is choosen. 
 
     # Sample Dirichlet weights for each column (shape: [n_cols, 4])
@@ -135,21 +139,21 @@ def create_rand_matrix():
 
     # Combine the DataFrames using column-wise Dirichlet weights
     combined_values = (
-        weights[:, 0] * imputed_df_nonNA_sigmatrix01.values +
-        weights[:, 1] * imputed_df_nonNA_sigmatrix02.values +
-        weights[:, 2] * imputed_df_nonNA_sigmatrix03.values +
-        weights[:, 3] * imputed_df_nonNA_sigmatrix04.values
+        weights[:, 0] * imputed_df_nonNA_sigmatrix04.values +#sigrand
+        weights[:, 1] * imputed_df_nonNA_sigmatrix01.values #+
+        # weights[:, 2] * imputed_df_nonNA_sigmatrix03.values +
+        # weights[:, 3] * imputed_df_nonNA_sigmatrix04.values
     )
     combined_values_inlogged = (
         weights[:, 0] * imputed_df_nonNA_sigmatrix01_inlogged.values +
-        weights[:, 1] * imputed_df_nonNA_sigmatrix02_inlogged.values +
-        weights[:, 2] * imputed_df_nonNA_sigmatrix03_inlogged.values +
-        weights[:, 3] * imputed_df_nonNA_sigmatrix04_inlogged.values
+        weights[:, 1] * imputed_df_nonNA_sigmatrix02_inlogged.values #+
+        # weights[:, 2] * imputed_df_nonNA_sigmatrix03_inlogged.values +
+        # weights[:, 3] * imputed_df_nonNA_sigmatrix04_inlogged.values
     )
     combined_values_real = (
         weights_real[:, 0] * imputed_df_nonNA_sigmatrix01.values +
-        weights_real[:, 1] * imputed_df_nonNA_sigmatrix02.values +
-        weights_real[:, 2] * imputed_df_nonNA_sigmatrix03.values
+        weights_real[:, 1] * imputed_df_nonNA_sigmatrix02.values #+
+        # weights_real[:, 2] * imputed_df_nonNA_sigmatrix03.values
     )
     combined_values_outlogged = np.log1p(combined_values)
 
@@ -348,9 +352,10 @@ def get_test_samples_sts(cell_type): #returns a dataframe of the left out test s
     return res #usually should log this
 def get_generation_samples_sts_inlogged(cell_type):
     return np.log1p(imputed_df_nonNA.loc[:,imputed_df_nonNA.columns.str.contains(cell_type)])
-def get_generation_samples_sts_outlogged_and_nonlogged(cell_type):
-    mask = imputed_df_nonNA.columns.str.contains(cell_type)
+def get_generation_samples_sts_outlogged_and_nonlogged(cell_type):#bulkcontrol
+    mask = imputed_df_nonNA.columns.str.contains(cell_type) & (imputed_df_nonNA.columns.str.contains("03") | imputed_df_nonNA.columns.str.contains("02"))# change back to : mask = imputed_df_nonNA.columns.str.contains(cell_type) f'd up final
     return imputed_df_nonNA.loc[:, mask]
+
 
 
 cell_type_to_base_mapping = {
@@ -583,12 +588,12 @@ def generate_imputed_sample(healthy):
             quadruple_df_inlogged = get_generation_samples_sts_inlogged(fine_celltype+"_")
             quadruple_df_outlogged = get_generation_samples_sts_outlogged_and_nonlogged(fine_celltype+"_")
             quadruple_df_nonlogged = get_generation_samples_sts_outlogged_and_nonlogged(fine_celltype+"_")
-            rand_nrs = np.random.dirichlet(np.ones(4), size=1)[0] #change this back to 4
+            rand_nrs = np.random.dirichlet(np.ones(2), size=1)[0] #change this back to 4
             fine_type_sample = np.zeros((all_imputed_arrays['B.naive'].shape[0]))
             fine_type_sample_inlogged = np.zeros((all_imputed_arrays['B.naive'].shape[0]))
             fine_type_sample_outlogged = np.zeros((all_imputed_arrays['B.naive'].shape[0]))
             fine_type_sample_nonlogged = np.zeros((all_imputed_arrays['B.naive'].shape[0]))
-            for i in range(4):
+            for i in range(2):
                 debugstep = triple_df.iloc[:,i]
                 fine_type_sample+=rand_nrs[i]* debugstep
                 fine_type_sample_inlogged += rand_nrs[i]*quadruple_df_inlogged.iloc[:,i]

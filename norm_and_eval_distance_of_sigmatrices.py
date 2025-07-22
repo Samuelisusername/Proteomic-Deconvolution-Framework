@@ -1,4 +1,5 @@
-# usage python3 norm_and_eval_distance_of_sigmatrices "real_sig_nonlogged.txt" "randomized_bayes_sig_matrix.tsv" "BAYESPRISM-updated_sig_matrixdefault_id.txt"
+# usage python3 norm_and_eval_distance_of_sigmatrices <real_signature_matrix> <reference_signature_matrix> <real_signature_matrix>
+# example python3 norm_and_eval_distance_of_sigmatrices.py "real_sig_nonlogged.txt" "randomized_bayes_sig_matrix.tsv" "BAYESPRISM-updated_sig_matrixdefault_id.txt"
 
 import matplotlib.pyplot
 import pandas as pd
@@ -34,9 +35,14 @@ df_normalized_real = df_normalized_real.T
 df_normalized_ref = df_normalized_ref.T
 
 print(df_normalized_real.head)
-print(df_normalized_ref.head)
-
-
+print(df_normalized_ref.head, "first")
+desired_order = [
+    'B.memory', 'B.naive', 'B.plasma', 'mTregs', 'T4.naive', 'nTregs', 'T4.CM', 'T4.EM', 'T4.EMRA',
+    'Th1', 'Th17', 'Th2', 'T8.naive', 'T8.CM', 'T8.EM', 'T8.EMRA', 'mDC', 'pDC', 'Basophil',
+    'Eosinophil', 'Neutrophil', 'MO.classical', 'MO.intermediate', 'MO.nonclassical', 'NK.bright', 'NK.dim'
+]
+df_normalized_real = df_normalized_real[desired_order]
+print(df_normalized_real.head, "second")
 df_normalized_real.reset_index(drop=True,inplace = True)
 df_normalized_ref.reset_index(drop = True, inplace = True)
 updated_reference.reset_index(drop= True, inplace= True)
@@ -67,12 +73,44 @@ colours = {"Real": "blue", "Ref": "green", "Updated" : "red"}
 for source in colours.keys():
     subset = pca_df[pca_df["source"] == source]
     plt.scatter(subset["PC1"], subset["PC2"], label = source, color = colours[source], alpha = 0.7) 
-for i, row in pca_df.iterrows():
-    plt.annotate(row["Cell type"], (row["PC1"], row["PC2"]), fontsize=8, alpha=0.7)
+
+    
+ref_points = pca_df[pca_df["source"] == "Ref"]
+updated_points = pca_df[pca_df["source"] == "Updated"]
+real_points = pca_df[pca_df["source"]=="Real"]
+
+for i in range(len(ref_points)):
+    # Green arrows from Ref to Real
+    plt.quiver(
+        ref_points.iloc[i]["PC1"], ref_points.iloc[i]["PC2"],  # Start point (Ref)
+        real_points.iloc[i]["PC1"] - ref_points.iloc[i]["PC1"],  # Delta X (Real - Ref)
+        real_points.iloc[i]["PC2"] - ref_points.iloc[i]["PC2"],  # Delta Y (Real - Ref)
+        angles='xy', scale_units='xy', scale=1, color="green", alpha=0.7, width = 0.001
+    )
+    # Red arrows from Ref to Updated
+    plt.quiver(
+        ref_points.iloc[i]["PC1"], ref_points.iloc[i]["PC2"],  # Start point (Ref)
+        updated_points.iloc[i]["PC1"] - ref_points.iloc[i]["PC1"],  # Delta X (Updated - Ref)
+        updated_points.iloc[i]["PC2"] - ref_points.iloc[i]["PC2"],  # Delta Y (Updated - Ref)
+        angles='xy', scale_units='xy', scale=1, color="red", alpha=0.7, width = 0.001
+    )
+
+
+# for i, row in pca_df.iterrows():
+#     plt.annotate(row["Cell type"], (row["PC1"], row["PC2"]), fontsize=6, alpha=0.7)
+from adjustText import adjust_text
+
+texts = []
+for i, row in pca_df[pca_df["source"] == "Real"].iterrows():
+    texts.append(
+        plt.text(row["PC1"], row["PC2"], row["Cell type"], fontsize=10, alpha=0.8)
+    )
+
+adjust_text(texts, arrowprops=dict(arrowstyle='-', color='gray', lw=0.5))
 plt.xlabel("Principal Component 1")
 plt.ylabel("Principal Component 2")
 plt.title("PCA Scatter Plot of Signature Matrices")
-plt.legend()
+plt.legend(fontsize = 15)
 plt.grid()
 
 # Show the plot
@@ -93,4 +131,4 @@ normalized_real_values= df_normalized_real.values
 #overall_rmse = np.sqrt(mean_squared_error(normalized_real_values.flatten(), normalized_values_ref.flatten()))
 real_v_reference = np.sqrt(mean_squared_error(normalized_real_values.flatten(), normalized_values_ref.flatten()))
 real_v_updated = np.sqrt(mean_squared_error(normalized_real_values.flatten(), updated_reference.values.flatten()))
-#print("real v ref = ", real_v_reference, "; real v updated =   ", real_v_updated)
+print("real v ref = ", real_v_reference, "; real v updated =   ", real_v_updated)

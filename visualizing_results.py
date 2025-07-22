@@ -8,6 +8,7 @@ parser.add_argument("results")
 parser.add_argument("method")
 
 
+
 args = parser.parse_args()
 results = pd.read_csv(args.results, sep = '\t', index_col = 0)
 
@@ -92,7 +93,7 @@ group_sums_df = pd.DataFrame(group_sums)
 
 
 import matplotlib.pyplot as plt
-
+plt.rcParams.update({'font.size': 25})  # Increase global font size
 # Transpose the DataFrame for easier plotting
 combined_df_T = combined_df.T
 group_sums_df_T = group_sums_df.T
@@ -197,7 +198,8 @@ def visualize_predicted_vs_real(df):
     df[predicted_cols].plot(kind='bar', stacked=True, ax=axs[0], colormap='tab20')
     axs[0].set_title("Predicted Cell Fractions")
     axs[0].set_ylabel("Fraction")
-    axs[0].legend(loc="upper right")
+    axs[0].legend(loc="upper right", bbox_to_anchor=(1.405, 0.5))
+    plt.subplots_adjust(right=0.75)
 
     # Plot real values
     df[predicted_cols+real_cols].to_csv(f"{args.method}_fractions_compare.csv")
@@ -205,9 +207,10 @@ def visualize_predicted_vs_real(df):
     axs[1].set_title("Real Cell Fractions")
     axs[1].set_xlabel("Sample")
     axs[1].set_ylabel("Fraction")
-    axs[1].legend(loc="upper right")
-    plt.tight_layout()
-    plt.savefig(f"all_fracs_compare/{args.method}_fractions_compare.png")
+    axs[1].legend(loc="upper right", bbox_to_anchor = (1.405, 0.5))
+    plt.subplots_adjust(right=0.75)
+    #plt.savefig(f"all_fracs_compare/{args.method}_fractions_compare.png")
+    plt.show()
 def visualize_prediciton_errors(df):
     global real_fracs_coarse_compare
     cell_groups = {
@@ -230,23 +233,26 @@ def visualize_prediciton_errors(df):
 
 
     # Plot
-    error_df.plot(kind='bar', figsize=(14, 6))
+    ax= error_df.plot(kind='bar', figsize=(14, 6))
     error_df.to_csv("Errors_of_coarse_celltype_prediction_Cibersort.csv")
     plt.title("Error Between Predicted and Real Cell Fractions")
     plt.xlabel("Sample")
     plt.ylabel("Error")
-    plt.legend(title="Cell Type", loc="upper right")
-    plt.tight_layout()
+    ax.legend(title="Cell Type", loc="upper right", bbox_to_anchor=(1.408 , 0.7))#bbox
+    plt.subplots_adjust(right=0.75)
+    plt.show()
     plt.savefig(f"all_errors/{args.method}_errors.png")
     plt.close()
     for celltype in cell_groups.keys():
-        plt.scatter(df[predicted_to_real_name[celltype]], abs(error_df[celltype]), label = celltype)
-    plt.xlabel('real percentage')  # Replace with your x-axis label
+        plt.scatter(df[predicted_to_real_name[celltype]], error_df[celltype], label = celltype)
+    plt.xlabel('real fraction')  # Replace with your x-axis label
     plt.ylabel('error')  # Replace with your y-axis label
-    plt.title('Scatter Plot of percent vs error')
-    plt.legend()
+    plt.title('Scatter Plot of fractions vs error')
+    plt.legend(title="Cell Type", loc="center left", bbox_to_anchor=(1, 0.5))
+    plt.subplots_adjust(right=0.75)
     plt.grid(True)
-    plt.savefig(f"correlation_images/{args.method}_all_cells_percents_error_correlation.png")
+    plt.show()
+    plt.savefig(f"correlation_images/{args.method}_all_cells_fractions_error_correlation.png")
 
 def visualize_predicted_vs_real_percentages(df):
     cell_groups = {
@@ -267,8 +273,10 @@ def visualize_predicted_vs_real_percentages(df):
         plt.xlabel('predicted')  # Replace with your x-axis label
         plt.ylabel('real')  # Replace with your y-axis label
         plt.title('Scatter Plot of X vs Y')
-        plt.legend()
+        plt.legend(bbox_to_anchor=(1, 1))#bbox
+        plt.subplots_adjust(right=0.75)
         plt.grid(True)
+        plt.show()
         plt.savefig(f"correlation_images/{args.method}_{celltype}_percents_correlation.png")
 
         plt.figure(figsize=(10, 8))  # Create a single figure for all plots
@@ -284,11 +292,13 @@ def visualize_predicted_vs_real_percentages(df):
     # Add labels, title, legend, and grid
     plt.xlabel('Predicted')  # Replace with your x-axis label
     plt.ylabel('Real')  # Replace with your y-axis label
-    plt.title('Scatter Plot of Predicted vs Real for All Cell Types')
-    plt.legend(title="Cell Types")  # Add a legend with a title
+    plt.title('Scatter Plot of Predicted vs Real Fractions')
+    plt.legend(title="Cell Types", bbox_to_anchor=(1, 0.5))  # Add a legend with a title
+    plt.subplots_adjust(right=0.75)
     plt.grid(True)
 
     # Save the combined plot
+    plt.show()
     plt.savefig(f"correlation_images/{args.method}_all_celltypes_percents_correlation.png")
 # def visualize_predicted_percentage_vs_error():
 
