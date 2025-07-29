@@ -42,7 +42,7 @@ Our comprehensive benchmarking revealed distinct performance characteristics:
   - Near-perfect correlations (Pearson > 0.99 for B and T cells)
   - Fastest runtime compared to other methods
 
-- **CIBERSORT**: Strong performance but preprocessing-sensitive
+- **CIBERSORT**: Best performance with inlogged preprocessing but preprocessing-sensitive
   - Significant difference between inlogged (1.16% error) vs outlogged (2.04% error) normalization
   - Requires careful data preprocessing optimization
   - Good balance of accuracy and interpretability
