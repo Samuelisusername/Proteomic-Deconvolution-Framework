@@ -6,7 +6,7 @@ A comprehensive computational framework for benchmarking and evaluating proteomi
 
 Lymphoma is a blood cancer affecting lymphocytes, a crucial component of our immune system. While RNA-based algorithms have been developed to estimate cell composition in tumor microenvironments, 11%-38% of patients still develop drug resistance, with poor survival outcomes (18 months for progressive CLL, 4 months for Richter's transformation). This highlights the critical need for better diagnostic tools and personalized treatment approaches.
 
-This framework addresses the gap between transcriptomic and proteomic deconvolution by providing the first comprehensive benchmarking platform specifically designed for protein expression data analysis.
+This framework addresses the gap between transcriptomic and proteomic deconvolution by providing one of the first comprehensive benchmarking platform specifically designed for protein expression data analysis.
 
 ## What This Framework Does
 
