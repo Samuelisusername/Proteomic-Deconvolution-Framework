@@ -37,13 +37,13 @@ This framework addresses the gap between transcriptomic and proteomic deconvolut
 ### Method Performance
 Our comprehensive benchmarking revealed distinct performance characteristics:
 
-- **NNLS**: Most robust method with mean absolute errors as low as 0.92% under optimal conditions
+- **NNLS**: Most robust method with mean absolute errors as low as 1.26% under optimal conditions
   - Deterministic results with no hyperparameter tuning required
   - Near-perfect correlations (Pearson > 0.99 for B and T cells)
   - Fastest runtime compared to other methods
 
 - **CIBERSORT**: Best performance with inlogged preprocessing but preprocessing-sensitive
-  - Significant difference between inlogged (1.16% error) vs outlogged (2.04% error) normalization
+  - Significant difference between inlogged (1.00% error) vs outlogged (2.04% error) normalization
   - Requires careful data preprocessing optimization
   - Good balance of accuracy and interpretability
 
@@ -226,8 +226,7 @@ This work contributes to the broader effort to develop better diagnostic and tre
 ## Contact
 
 For questions, suggestions, or collaborations, please contact:
-- [Your name and email]
-- [Institution/Lab information]
+- Samuel Gair, sagair@ethz.ch
 
 ---
 
