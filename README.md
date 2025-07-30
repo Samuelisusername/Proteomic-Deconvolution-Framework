@@ -203,16 +203,6 @@ We welcome contributions to improve the framework! Please see [CONTRIBUTING.md] 
 - Expanding evaluation metrics
 - Improving documentation
 
-## Citation
-
-If you use this framework in your research, please cite:
-```
-[Your paper citation here]
-```
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md] file for details.
 
 ## Acknowledgments
 
@@ -225,4 +215,4 @@ For questions, suggestions, or collaborations, please contact:
 
 ---
 
-**Note**: This framework represents ongoing research in proteomic deconvolution. Results should be validated with additional datasets before clinical application. ::::: for fixed sigmatrixes in choosefracs.py how to choose the patientnr for the sigmatrix: if you want on
+**Note**: This framework represents ongoing research in proteomic deconvolution. Results should be validated with additional datasets before clinical application.
