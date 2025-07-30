@@ -23,7 +23,7 @@ This framework addresses the gap between transcriptomic and proteomic deconvolut
 - **Biological Foundation**: Built on extensive data exploration including PCA visualization of immune cell subsets across ~10,000-dimensional proteomic space
 - **Preprocessing Strategies**: Multiple normalization approaches optimized for protein expression data
 - **Bias Analysis**: Systematic characterization of method-specific biases and limitations
-- **Clinical Relevance**: Demonstrates 100% classification accuracy for distinguishing healthy vs. cancerous samples using B-cell fraction thresholds
+- **Clinical Relevance**: Demonstrates Proteomic Methods in biologically inspired settings to have only about 1% errors per celltype and 100% classification accuracy for distinguishing healthy vs. cancerous samples using B-cell fraction thresholds
 
 ## Research Findings
 
