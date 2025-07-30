@@ -207,7 +207,109 @@ scikit-learn
 matplotlib
 scipy
 ```
+# CIBERSORT R Script for Cell Type Deconvolution
 
+This R script performs cell type deconvolution using Support Vector Regression (SVR) to estimate cell type proportions from bulk RNA expression data, inspired by the CIBERSORT algorithm.
+
+---
+
+## 🧪 Usage
+
+Run the script with the following command-line arguments:
+
+```bash
+Rscript cibersort_with_inputs.r --QN=TRUE --ID=experiment_123 --loggedness=nonlogged
+```
+
+### Arguments
+
+- `--QN`: Logical flag (`TRUE` or `FALSE`) to enable or disable Quantile Normalization on the mixture data.
+- `--ID`: A string identifier used to name the output results file.
+- `--loggedness`: Specifies the data preprocessing type and selects the appropriate input files. Options:
+  - `nonlogged`
+  - `inlogged`
+  - `outlogged`
+
+**Example:**
+
+```bash
+Rscript cibersort_with_inputs.r --QN=FALSE --ID=exp001 --loggedness=inlogged
+```
+
+---
+
+## 📂 Input Files
+
+Depending on the `--loggedness` parameter, the script automatically selects these files:
+
+| Loggedness  | Signature Matrix File              | Mixture Sample Matrix File          |
+|-------------|------------------------------------|-------------------------------------|
+| nonlogged   | `imputed_sig_matrix_nonlogged.txt` | `sample_nonlogged_imputed.txt`      |
+| inlogged    | `imputed_sig_matrix_inlogged.txt`  | `sample_inlogged_imputed.txt`       |
+| outlogged   | `imputed_sig_matrix_outlogged.txt` | `sample_outlogged_imputed.txt`      |
+
+---
+
+## 🔧 Dependencies
+
+Install required packages:
+
+```r
+install.packages(c("e1071", "parallel"))
+source("https://bioconductor.org/biocLite.R")
+biocLite("preprocessCore")
+```
+
+---
+
+## ⚙️ How It Works
+
+### 1. Preprocessing
+- Loads the signature matrix (X) and mixture expression data (Y).
+- If values appear log-transformed (max < 50), they are exponentiated: `Y <- 2^Y`.
+- Applies quantile normalization to Y if `--QN=TRUE`.
+
+### 2. Gene Matching
+- Retains only genes present in both matrices.
+
+### 3. Standardization
+- Standardizes signature matrix X to have zero mean and unit variance.
+
+### 4. SVR Deconvolution
+- Runs Support Vector Regression with ν = 0.25, 0.5, and 0.75 for each sample.
+- Negative coefficients are clipped to 0 and normalized to sum to 1.
+
+### 5. Permutation Testing (optional)
+- If `perm > 0`, runs permutation testing to compute empirical p-values.
+
+### 6. Output
+- Saves results in `CIBERSORT-Results-<ID>.txt` with:
+  - Estimated cell type proportions
+  - Correlation between prediction and mixture
+  - RMSE
+  - P-values (if permutations were run)
+
+---
+
+## 📄 Output Format
+
+| Column       | Description                                 |
+|--------------|---------------------------------------------|
+| Mixture      | Sample name                                 |
+| Cell Types   | Estimated proportions per cell type         |
+| P-value      | Empirical p-value from permutations         |
+| Correlation  | Correlation coefficient of fit              |
+| RMSE         | Root mean squared error                     |
+
+---
+
+## 🧾 Example
+
+```bash
+Rscript cibersort_with_inputs.r --QN=TRUE --ID=test123 --loggedness=nonlogged
+```
+
+This runs the deconvolution with quantile normalization on non-logged data and saves results to `CIBERSORT-Results-test123.txt`.
 
 ### 🔬 Run BayesPrism Deconvolution (`Bayes_Prism.r`)
 
