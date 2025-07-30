@@ -119,6 +119,38 @@ You'll need the proteomic reference data file:
 ## Framework Components
 
 
+
+
+## Framework Components
+
+### Data Generation (`choose_input_frac.py`)
+The core script that generates synthetic bulk proteomic samples with realistic cell-type distributions:
+
+#### Key Features:
+- **Three Normalization Strategies**:
+  - `inlogged`: Log transformation applied before combining individual profiles
+  - `outlogged`: Log transformation applied after combining profiles into bulk samples  
+  - `nonlogged`: No log transformation applied
+- **Flexible Signature Matrix Construction**:
+  - `fixed`: Uses single patient profiles (patient 04)
+  - `rand`: Creates randomized matrices using Dirichlet-distributed combinations
+- **Realistic Cell Compositions**: Based on healthy vs. lymphoma patient distributions
+
+#### Generated Outputs:
+- `imputed_sig_matrix_<normalization>.txt` - Signature matrices for CIBERSORT/NNLS
+- `sample_<normalization>_imputed.txt` - Bulk samples for deconvolution
+- `real_fracs.tsv` - Ground truth cell fractions (26 cell types)
+- `real_coarse_fracs.tsv` - Ground truth coarse fractions (4 main cell types)
+- `myinput2.gbm.rdata` - BayesPrism-formatted data (when using "bayes" option)
+
+### Cell Type Hierarchy
+The framework models 26 fine-grained cell types organized into 4 coarse categories:
+
+**B cells**: B.memory, B.naive, B.plasma  
+**T cells**: T4.CM, T4.EM, T4.EMRA, T4.naive, T8.CM, T8.EM, T8.EMRA, T8.naive, Th1, Th17, Th2, mTregs, nTregs  
+**Myeloid cells**: Basophil, Eosinophil, MO.classical, MO.intermediate, MO.nonclassical, Neutrophil, mDC, pDC  
+**NK cells**: NK.bright, NK.dim
+
 ### 🔍 Run NNLS Deconvolution
 
 The `nnls.py` script runs **Non-Negative Least Squares (NNLS)** deconvolution to estimate cell-type fractions from synthetic bulk proteomic samples using a predefined signature matrix.
@@ -176,36 +208,6 @@ matplotlib
 scipy
 ```
 
-
-## Framework Components
-
-### Data Generation (`choose_input_frac.py`)
-The core script that generates synthetic bulk proteomic samples with realistic cell-type distributions:
-
-#### Key Features:
-- **Three Normalization Strategies**:
-  - `inlogged`: Log transformation applied before combining individual profiles
-  - `outlogged`: Log transformation applied after combining profiles into bulk samples  
-  - `nonlogged`: No log transformation applied
-- **Flexible Signature Matrix Construction**:
-  - `fixed`: Uses single patient profiles (patient 04)
-  - `rand`: Creates randomized matrices using Dirichlet-distributed combinations
-- **Realistic Cell Compositions**: Based on healthy vs. lymphoma patient distributions
-
-#### Generated Outputs:
-- `imputed_sig_matrix_<normalization>.txt` - Signature matrices for CIBERSORT/NNLS
-- `sample_<normalization>_imputed.txt` - Bulk samples for deconvolution
-- `real_fracs.tsv` - Ground truth cell fractions (26 cell types)
-- `real_coarse_fracs.tsv` - Ground truth coarse fractions (4 main cell types)
-- `myinput2.gbm.rdata` - BayesPrism-formatted data (when using "bayes" option)
-
-### Cell Type Hierarchy
-The framework models 26 fine-grained cell types organized into 4 coarse categories:
-
-**B cells**: B.memory, B.naive, B.plasma  
-**T cells**: T4.CM, T4.EM, T4.EMRA, T4.naive, T8.CM, T8.EM, T8.EMRA, T8.naive, Th1, Th17, Th2, mTregs, nTregs  
-**Myeloid cells**: Basophil, Eosinophil, MO.classical, MO.intermediate, MO.nonclassical, Neutrophil, mDC, pDC  
-**NK cells**: NK.bright, NK.dim
 
 ### 🔬 Run BayesPrism Deconvolution (`Bayes_Prism.r`)
 
