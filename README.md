@@ -28,8 +28,8 @@ This framework addresses the gap between transcriptomic and proteomic deconvolut
 ## Research Findings
 
 ### Method Performance
-- **NNLS**: Most robust method with mean absolute errors as low as 0.92% under optimal conditions
-- **CIBERSORT**: Strong performance but sensitive to preprocessing (1.16% vs 2.04% error for different normalizations)
+- **NNLS**: Most robust method with outlogged normalization.
+- **CIBERSORT**: Strong performance but sensitive to preprocessing (1.16% vs 2.04% error for inlogged normalizations and outlogged respectively)
 - **BayesPrism**: Underperformed but showed potential for signature matrix improvement
 
 ## Research Findings
@@ -60,7 +60,7 @@ Our comprehensive benchmarking revealed distinct performance characteristics:
 
 ## Why This Matters
 
-### Clinical Applications
+### Cancer Cell Fraction Estimation
 - **Improved Diagnosis**: Better cell composition estimates for lymphoma patients
 - **Personalized Treatment**: Foundation for developing patient-specific therapeutic strategies
 - **Drug Resistance Monitoring**: Tools to better understand and predict treatment resistance
@@ -71,11 +71,6 @@ Our comprehensive benchmarking revealed distinct performance characteristics:
 - **Cross-Platform Validation**: Framework supports testing across different proteomic technologies
 
 ## Getting Started
-
-### Prerequisites
-- Python 3.x
-- Required packages: [list main dependencies]
-- Proteomic data in supported formats
 
 ### Prerequisites
 - Python 3.x
