@@ -31,8 +31,8 @@ This framework addresses the gap between transcriptomic and proteomic deconvolut
 - **NNLS**: Most robust method with outlogged normalization.
 - **CIBERSORT**: Strong performance but sensitive to preprocessing (1.16% vs 2.04% error for inlogged normalizations and outlogged respectively)
 - **BayesPrism**: Underperformed but showed potential for signature matrix improvement
-  ![Method Performance Comparison](big_compare.png)
-)
+
+
 
 ## Research Findings
 
@@ -53,12 +53,16 @@ Our comprehensive benchmarking revealed distinct performance characteristics:
   - Systematic overshooting in signature matrix updates
   - Correct update direction suggests potential for optimization
   - May benefit from modified scaling approaches
+ 
+      ![Method Performance Comparison](big_compare.png)
 
 ### Key Insights
 - **Signature Matrix Construction**: Randomized multi-individual matrices reduced prediction errors by ~50% vs single-patient references
 - **Systematic Biases**: All methods showed consistent overestimation of T cells and underestimation of B/myeloid cells
 - **Clinical Validation**: 100% classification accuracy for healthy vs. cancerous samples using B-cell fraction thresholds
 - **Distribution Sensitivity**: Performance degraded with highly skewed cell compositions typical in pathological conditions
+
+  ![](Ref_sigmatrices.png)
 
 ## Why This Matters
 
