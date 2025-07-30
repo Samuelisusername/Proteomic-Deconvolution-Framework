@@ -332,6 +332,59 @@ matplotlib
 ---
 
 🧠 **Tip**: This visualization is useful for identifying method-specific biases—e.g., systematic overestimation of T cells or underestimation of B cells—and comparing preprocessing strategies (e.g., logged vs. non-logged normalization).
+### 📊 Evaluate Signature Matrices Distance and PCA Visualization
+
+This Python script normalizes and compares signature matrices, then visualizes their relationships via PCA and computes RMSE distances.
+
+---
+
+#### ✅ Usage
+
+```bash
+python3 norm_and_eval_distance_of_sigmatrices.py <real_signature_matrix> <reference_signature_matrix> <updated_signature_matrix>
+```
+
+#### 📌 Example
+
+```bash
+python3 norm_and_eval_distance_of_sigmatrices.py "real_sig_nonlogged.txt" "randomized_bayes_sig_matrix.tsv" "BAYESPRISM-updated_sig_matrixdefault_id.txt"
+```
+
+---
+
+#### ⚙️ Dependencies
+
+Make sure to install the following Python packages:
+
+```bash
+pip install matplotlib pandas numpy scikit-learn adjustText
+```
+
+---
+
+#### 🧩 What it does:
+
+- Loads three signature matrices (real, reference, updated).
+- Normalizes columns to sum to 1 for comparability.
+- Reorders cell types to a desired fixed order.
+- Combines the normalized data and performs PCA to visualize differences between matrices.
+- Draws arrows in PCA space showing the distance from reference to real and updated matrices.
+- Calculates RMSE between real vs reference and real vs updated signature matrices.
+- Displays a PCA scatter plot with annotated cell types.
+
+---
+
+#### 📤 Output
+
+- Interactive PCA plot visualizing signature matrix similarity.
+- RMSE values printed in console comparing distances between matrices.
+
+---
+
+#### 📝 Notes
+
+- PCA helps identify shifts or improvements in updated signature matrices relative to the reference.
+- Arrows indicate the direction and magnitude of change for each cell type.
 
 
 ### Deconvolution Methods
