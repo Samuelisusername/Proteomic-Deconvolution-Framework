@@ -118,6 +118,64 @@ You'll need the proteomic reference data file:
 
 ## Framework Components
 
+### 🔍 Run NNLS Deconvolution
+
+The `nnls.py` script runs **Non-Negative Least Squares (NNLS)** deconvolution to estimate cell-type fractions from synthetic bulk proteomic samples using a predefined signature matrix.
+
+#### ✅ Usage
+
+```bash
+python3 nnls.py <normalization>
+```
+
+**Arguments:**
+- `<normalization>`: Normalization type used when generating the data. Must be one of:
+  - `inlogged`
+  - `outlogged`
+  - `nonlogged`
+
+#### 💡 Example
+
+```bash
+python3 nnls.py outlogged
+```
+
+This command will:
+- Load `imputed_sig_matrix_outlogged.txt` as the signature matrix
+- Load `sample_outlogged_imputed.txt` as the bulk sample file
+- Perform NNLS-based estimation using `LinearRegression(positive=True)`
+- Save the predicted cell fractions to `NNLS-Results_outlogged.txt`
+
+#### 📥 Input Files
+
+Make sure the following files exist in the working directory:
+- `imputed_sig_matrix_<normalization>.txt` – Signature matrix (rows: proteins, columns: cell types)
+- `sample_<normalization>_imputed.txt` – Bulk proteomic samples (rows: proteins, columns: samples)
+- `real_fracs.tsv` – Ground truth cell fractions (used internally for column mapping)
+
+#### 📤 Output
+
+- `NNLS-Results_<normalization>.txt`: Predicted cell-type fractions (tab-delimited, one row per sample)
+
+#### ⚙️ Notes
+- Uses `scikit-learn`'s `LinearRegression(positive=True)` for NNLS approximation.
+- Estimated coefficients are normalized to sum to 1 per sample.
+- R² scores for model fits are printed to the console.
+- Column names are internally mapped to match the proteomic dataset structure.
+
+#### 📦 Dependencies
+
+These packages must be installed (already listed in `requirements.txt`):
+
+```txt
+numpy
+pandas
+scikit-learn
+matplotlib
+scipy
+```
+
+
 ## Framework Components
 
 ### Data Generation (`choose_input_frac.py`)
