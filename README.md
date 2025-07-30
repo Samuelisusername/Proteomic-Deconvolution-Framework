@@ -230,6 +230,65 @@ Where:
 - `results_file`: Tab-separated file containing deconvolution results
 - `method_name`: Identifier for the method (e.g., "cibersort", "nnls", "bayesprism")
 
+### 📊 Visualize Deconvolution Errors by Method and Cell Type
+
+The `vis_all_errors_meanified.py` script creates an **error scatter plot** comparing the performance of different deconvolution methods across **coarse cell types** (B cells, T cells, Myeloid cells, NK cells).
+
+#### ✅ Usage
+
+```bash
+python3 vis_all_errors_meanified.py <results_file1> <results_file2> ... <results_fileN>
+```
+
+You can pass any number of tab-separated result files generated from `nnls.py`, CIBERSORT, or other supported methods.
+
+#### 💡 Example
+
+```bash
+python3 vis_all_errors_meanified.py NNLS-Results_nonlogged.txt NNLS-Results_inlogged.txt NNLS-Results_outlogged.txt \
+CIBERSORT-Results-outlogged.txt CIBERSORT-Results-inlogged.txt CIBERSORT-Results-nonlogged.txt \
+CIBERSORT-Results-QN_nonlogged.txt CIBERSORT-Results-QN_inlogged.txt CIBERSORT-Results-QN_outlogged.txt
+```
+
+#### 📥 Input Requirements
+
+- `real_fracs.tsv`: Ground truth cell fractions (fine-grained, 26 types)
+- `real_coarse_fracs.tsv`: Ground truth coarse cell-type fractions (4 types)
+- One or more deconvolution result files (`*.txt`) output by `nnls.py` or other methods. Each should contain predicted cell-type fractions (tab-separated).
+
+#### 📤 Output
+
+- A **scatter + bar plot** comparing prediction errors per method and cell type
+- Overlayed **average absolute error lines** for each method
+- Colored scatter points and bars for each cell type:
+  - 🔴 B cells
+  - 🔵 T cells
+  - 🟠 Myeloid cells
+  - ⚫ NK cells
+  - 🟢 Green dashed lines = average absolute error per method
+
+#### 📈 What It Shows
+
+- Point-by-point differences between predicted and actual fractions
+- Coarse-grained cell-type breakdown (sum of related fine-grained types)
+- Easy visual comparison of method accuracy and bias
+- Sorted methods (left to right) based on overall average absolute error
+
+#### 📦 Dependencies
+
+Already included in `requirements.txt`:
+
+```txt
+pandas
+numpy
+matplotlib
+```
+
+---
+
+🧠 **Tip**: This visualization is useful for identifying method-specific biases—e.g., systematic overestimation of T cells or underestimation of B cells—and comparing preprocessing strategies (e.g., logged vs. non-logged normalization).
+
+
 ### Deconvolution Methods
 - **NNLS (Non-Negative Least Squares)**: Most robust method with deterministic results
 - **CIBERSORT**: Strong performance but sensitive to preprocessing choices
