@@ -118,6 +118,7 @@ You'll need the proteomic reference data file:
 
 ## Framework Components
 
+
 ### 🔍 Run NNLS Deconvolution
 
 The `nnls.py` script runs **Non-Negative Least Squares (NNLS)** deconvolution to estimate cell-type fractions from synthetic bulk proteomic samples using a predefined signature matrix.
@@ -205,6 +206,50 @@ The framework models 26 fine-grained cell types organized into 4 coarse categori
 **T cells**: T4.CM, T4.EM, T4.EMRA, T4.naive, T8.CM, T8.EM, T8.EMRA, T8.naive, Th1, Th17, Th2, mTregs, nTregs  
 **Myeloid cells**: Basophil, Eosinophil, MO.classical, MO.intermediate, MO.nonclassical, Neutrophil, mDC, pDC  
 **NK cells**: NK.bright, NK.dim
+
+### 🔬 Run BayesPrism Deconvolution (`Bayes_Prism.r`)
+
+The `Bayes_Prism.r` script runs **BayesPrism** to estimate cell-type fractions and update the reference signature matrix based on synthetic bulk and single-cell proteomic data.
+
+#### ✅ Usage
+
+```bash
+Rscript Bayes_Prism.r --ID=<job_id>
+```
+
+- `<job_id>`: Optional identifier used to label output files (default: `"default_id"`)
+
+#### 📥 Prerequisites
+
+Before running this script:
+- You **must** have executed `good_main.py`, which generates the required `myinput2.gbm.rdata` file.
+- That file must contain:
+  - `sc.dat` – single-cell proteomic reference
+  - `bk.dat` – synthetic bulk sample matrix
+  - `cell.type.labels`, `cell.state.labels` – metadata for cell annotation
+
+#### ⚙️ Dependencies
+
+Install the required R package:
+
+```r
+install.packages("BayesPrism")  # or use devtools::install_github("Danko-Lab/BayesPrism")
+```
+
+#### 📤 Output
+
+This script generates:
+
+- `BAYESPRISM-Results<job_id>.txt`: Estimated cell-type fractions  
+- `BAYESPRISM-updated_sig_matrix<job_id>.txt`: Updated signature matrix  
+- `myinput2.gbm.rdata`: R workspace with saved results
+
+#### 💡 Notes
+
+- The script internally renames output columns to match proteomic naming conventions (e.g., `LFQ.intensity.imputed_T4.CM_04_steady-state`)
+- Uses `new.prism()` with adjusted outlier thresholds (`outlier.cut = 0.001`, `outlier.fraction = 0.05`)
+- Deconvolution is run using a single core (`n.cores = 1`) by default — you can modify this in the script for parallelization
+
 
 ### Evaluation Framework (`evaluate_results.py`)
 Comprehensive analysis script for comparing predicted vs. ground truth cell fractions:
