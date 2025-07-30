@@ -67,9 +67,9 @@ Our comprehensive benchmarking revealed distinct performance characteristics:
 ## Why This Matters
 
 ### Cancer Cell Fraction Estimation
-- **Improved Diagnosis**: Better cell composition estimates for lymphoma patients
+- **Improved Data for Diagnosis**: Better cell composition estimates for lymphoma patients
 - **Personalized Treatment**: Foundation for developing patient-specific therapeutic strategies
-- **Drug Resistance Monitoring**: Tools to better understand and predict treatment resistance
+- **Drug Resistance Monitoring**: Cell fraction esimation is essential to better understand and predict treatment resistance
 
 ### Research Impact
 - **Reproducible Research**: Open-source framework enables standardized method comparison
