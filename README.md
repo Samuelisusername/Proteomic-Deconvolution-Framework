@@ -429,6 +429,8 @@ CIBERSORT-Results-QN_nonlogged.txt CIBERSORT-Results-QN_inlogged.txt CIBERSORT-R
 - Easy visual comparison of method accuracy and bias
 - Sorted methods (left to right) based on overall average absolute error
 
+  ![](scatter3v1.png)
+
 #### 📦 Dependencies
 
 Already included in `requirements.txt`:
@@ -486,7 +488,7 @@ pip install matplotlib pandas numpy scikit-learn adjustText
 
 #### 📤 Output
 
-- Interactive PCA plot visualizing signature matrix similarity.
+- PCA plot visualizing signature matrix similarity.
 - RMSE values printed in console comparing distances between matrices.
 
 ---
@@ -522,7 +524,7 @@ pip install matplotlib pandas numpy scikit-learn adjustText
 
 ## Contributing
 
-We welcome contributions to improve the framework! Please see [CONTRIBUTING.md] for guidelines on:
+We welcome contributions to improve the framework!
 - Adding new deconvolution methods
 - Implementing additional normalization strategies
 - Expanding evaluation metrics
