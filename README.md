@@ -31,6 +31,8 @@ This framework addresses the gap between transcriptomic and proteomic deconvolut
 - **NNLS**: Most robust method with outlogged normalization.
 - **CIBERSORT**: Strong performance but sensitive to preprocessing (1.16% vs 2.04% error for inlogged normalizations and outlogged respectively)
 - **BayesPrism**: Underperformed but showed potential for signature matrix improvement
+  ![Method Performance Comparison](big_compare.png)
+)
 
 ## Research Findings
 
